@@ -99,7 +99,7 @@
                     android:id="@+id/totalIncomeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="Income" />
 
                 <TextView
                     android:id="@+id/totalIncomeValue"
@@ -132,7 +132,7 @@
                     android:id="@+id/totalExpensesTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:text="Expenses" />
 
                 <TextView
                     android:id="@+id/totalExpensesValue"

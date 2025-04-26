@@ -2,6 +2,7 @@ package com.example.mad_lab_exam_3
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +41,24 @@ class Dashboard : Fragment() {
         val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         fab.setOnClickListener {
             showAddTransactionDialog()
+        }
+
+        val transactions = TransactionStorage.loadTransactions(requireContext())
+
+        val totalIncome = transactions.filter { it.type == "income" }.sumOf { it.amount }
+        val totalExpense = transactions.filter { it.type == "expense" }.sumOf { it.amount }
+
+        val prefs = requireContext().getSharedPreferences("finance_tracker_prefs", Context.MODE_PRIVATE)
+        val budget = prefs.getFloat("monthly_budget", 0f)
+
+        val remaining = budget - totalExpense
+
+        view.findViewById<TextView>(R.id.totalIncomeValue)?.text = "Rs. %.2f".format(totalIncome)
+        view.findViewById<TextView>(R.id.totalExpensesValue)?.text = "Rs. %.2f".format(totalExpense)
+        view.findViewById<TextView>(R.id.remainingBudgetValue)?.text = "Rs. %.2f".format(remaining)
+
+        if (remaining < 0) {
+            Toast.makeText(requireContext(), "Warning: Budget exceeded!", Toast.LENGTH_LONG).show()
         }
 
     }
