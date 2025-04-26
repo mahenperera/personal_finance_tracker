@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
@@ -73,10 +75,14 @@ class Dashboard : Fragment() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_transaction, null)
         val etTitle = dialogView.findViewById<EditText>(R.id.etTitle)
         val etAmount = dialogView.findViewById<EditText>(R.id.etAmount)
-        val etCategory = dialogView.findViewById<EditText>(R.id.etCategory)
         val etDate = dialogView.findViewById<EditText>(R.id.etDate)
         val rgType = dialogView.findViewById<RadioGroup>(R.id.rgType)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
+
+        val etCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.etCategory)
+        val categories = listOf("Food", "Transport", "Bills", "Entertainment", "Other")
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
+        etCategory.setAdapter(categoryAdapter)
 
         val alertDialog = AlertDialog.Builder(requireContext())
             .setView(dialogView)
@@ -179,17 +185,21 @@ class Dashboard : Fragment() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_transaction, null)
         val etTitle = dialogView.findViewById<EditText>(R.id.etTitle)
         val etAmount = dialogView.findViewById<EditText>(R.id.etAmount)
-        val etCategory = dialogView.findViewById<EditText>(R.id.etCategory)
         val etDate = dialogView.findViewById<EditText>(R.id.etDate)
         val rgType = dialogView.findViewById<RadioGroup>(R.id.rgType)
         val rbIncome = dialogView.findViewById<RadioButton>(R.id.rbIncome)
         val rbExpense = dialogView.findViewById<RadioButton>(R.id.rbExpense)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
 
+        val etCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.etCategory)
+        val categories = listOf("Food", "Transport", "Bills", "Entertainment", "Other")
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
+        etCategory.setAdapter(categoryAdapter)
+
         // Pre-fill fields with existing transaction data
         etTitle.setText(transaction.title)
         etAmount.setText(transaction.amount.toString())
-        etCategory.setText(transaction.category)
+        etCategory.setText(transaction.category, false)
         etDate.setText(transaction.date)
         if (transaction.type == "income") rbIncome.isChecked = true else rbExpense.isChecked = true
 

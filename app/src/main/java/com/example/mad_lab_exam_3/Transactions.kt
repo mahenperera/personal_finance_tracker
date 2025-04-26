@@ -5,12 +5,17 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,29 +34,70 @@ class Transactions : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val transactions = TransactionStorage.loadTransactions(requireContext())
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
+        val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+        val spinner = view.findViewById<Spinner>(R.id.categoryFilterSpinner)
+
+        val allTransactions = TransactionStorage.loadTransactions(requireContext())
+        val categories = listOf("All", "Food", "Transport", "Bills", "Entertainment", "Other")
+
+        // Setup Spinner
+        val spinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, categories)
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.adapter = spinnerAdapter
+
+        // Setup RecyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        recyclerView?.adapter = TransactionAdapter(
-            transactions,
+
+        // Set initial adapter with all transactions
+        var filteredTransactions = allTransactions
+        recyclerView.adapter = TransactionAdapter(
+            filteredTransactions,
             onEdit = { transaction -> showEditTransactionDialog(transaction) },
             onDelete = { transaction -> confirmDeleteTransaction(transaction) }
         )
 
+        // Handle category selection
+        spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                val selectedCategory = categories[position]
+                filteredTransactions = if (selectedCategory == "All") {
+                    allTransactions
+                } else {
+                    allTransactions.filter {
+                        it.category.equals(selectedCategory, ignoreCase = true)
+                    }.toMutableList()
+                }
 
-        val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
+
+                recyclerView.adapter = TransactionAdapter(
+                    filteredTransactions,
+                    onEdit = { transaction -> showEditTransactionDialog(transaction) },
+                    onDelete = { transaction -> confirmDeleteTransaction(transaction) }
+                )
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
+        }
+
+        // FAB for adding new transactions
         fab.setOnClickListener {
             showAddTransactionDialog()
         }
-
     }
+
 
     private fun showAddTransactionDialog() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_transaction, null)
         val etTitle = dialogView.findViewById<EditText>(R.id.etTitle)
         val etAmount = dialogView.findViewById<EditText>(R.id.etAmount)
-        val etCategory = dialogView.findViewById<EditText>(R.id.etCategory)
+
+        val etCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.etCategory)
+
+        val categories = listOf("Food", "Transport", "Bills", "Entertainment", "Other")
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
+        etCategory.setAdapter(categoryAdapter)
+
         val etDate = dialogView.findViewById<EditText>(R.id.etDate)
         val rgType = dialogView.findViewById<RadioGroup>(R.id.rgType)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
@@ -144,17 +190,21 @@ class Transactions : Fragment() {
         val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_add_transaction, null)
         val etTitle = dialogView.findViewById<EditText>(R.id.etTitle)
         val etAmount = dialogView.findViewById<EditText>(R.id.etAmount)
-        val etCategory = dialogView.findViewById<EditText>(R.id.etCategory)
         val etDate = dialogView.findViewById<EditText>(R.id.etDate)
         val rgType = dialogView.findViewById<RadioGroup>(R.id.rgType)
         val rbIncome = dialogView.findViewById<RadioButton>(R.id.rbIncome)
         val rbExpense = dialogView.findViewById<RadioButton>(R.id.rbExpense)
         val btnSave = dialogView.findViewById<Button>(R.id.btnSave)
 
+        val etCategory = dialogView.findViewById<AutoCompleteTextView>(R.id.etCategory)
+        val categories = listOf("Food", "Transport", "Bills", "Entertainment", "Other")
+        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
+        etCategory.setAdapter(categoryAdapter)
+
         // Pre-fill fields with existing transaction data
         etTitle.setText(transaction.title)
         etAmount.setText(transaction.amount.toString())
-        etCategory.setText(transaction.category)
+        etCategory.setText(transaction.category, false)
         etDate.setText(transaction.date)
         if (transaction.type == "income") rbIncome.isChecked = true else rbExpense.isChecked = true
 
