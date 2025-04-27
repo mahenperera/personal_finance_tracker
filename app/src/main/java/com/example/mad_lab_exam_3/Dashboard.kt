@@ -65,8 +65,19 @@ class Dashboard : Fragment() {
         view.findViewById<TextView>(R.id.totalExpensesValue)?.text = "Rs. %.2f".format(totalExpense)
         view.findViewById<TextView>(R.id.remainingBudgetValue)?.text = "Rs. %.2f".format(remaining)
 
+
         if (remaining < 0) {
             Toast.makeText(requireContext(), "Warning: Budget exceeded!", Toast.LENGTH_LONG).show()
+        } else if (remaining <= 1000) {
+            Toast.makeText(requireContext(), "Warning: You have only Rs. 1000 budget left!", Toast.LENGTH_LONG).show()
+        }
+
+        val summaryLink = view.findViewById<TextView>(R.id.summaryLink)
+        summaryLink.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, ExpensesSummary())
+                .addToBackStack(null)
+                .commit()
         }
 
     }

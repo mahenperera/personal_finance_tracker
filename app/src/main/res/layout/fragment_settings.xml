@@ -54,4 +54,25 @@
         android:text="Save"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
+
+    <Button
+        android:id="@+id/btn_export_data"
+        android:layout_width="200dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="300dp"
+        android:text="Backup Data"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/saveSettingsBtn" />
+
+    <Button
+        android:id="@+id/btn_import_data"
+        android:layout_width="200dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="21dp"
+        android:text="Restore From Backup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_export_data" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

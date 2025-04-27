@@ -2,6 +2,7 @@ package com.example.mad_lab_exam_3
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -20,6 +21,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import sendBudgetNotification
 import java.util.Calendar
 
 class Transactions : Fragment() {
@@ -144,6 +146,23 @@ class Transactions : Fragment() {
             val transactions = TransactionStorage.loadTransactions(requireContext())
             transactions.add(transaction)
             TransactionStorage.saveTransactions(requireContext(), transactions)
+
+            if (type == "expense") {
+                val prefs = requireContext().getSharedPreferences("finance_tracker_prefs", Context.MODE_PRIVATE)
+                val budget = prefs.getFloat("monthly_budget", 0f)
+                val allExpenses = transactions.filter { it.type == "expense" }
+                val totalExpenses = allExpenses.sumOf { it.amount }
+
+                if (budget > 0) {
+                    val percent = (totalExpenses / budget) * 100
+                    if (percent >= 100) {
+                        sendBudgetNotification(requireContext(), "⚠️ You've exceeded your monthly budget!")
+                    } else if (percent >= 80) {
+                        sendBudgetNotification(requireContext(), "⚠️ You're nearing your monthly budget.")
+                    }
+                }
+            }
+
 
             Toast.makeText(requireContext(), "Transaction added", Toast.LENGTH_SHORT).show()
             alertDialog.dismiss()
