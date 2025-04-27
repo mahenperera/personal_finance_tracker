@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 
 class TransactionAdapter(
@@ -39,6 +40,13 @@ class TransactionAdapter(
         } else {
             "- Rs. ${transaction.amount}"
         }
+
+        val colorRes = if (transaction.type == "income") {
+            R.color.incomeGreen
+        } else {
+            R.color.expenseRed
+        }
+        holder.tvAmount.setTextColor(ContextCompat.getColor(holder.itemView.context, colorRes))
 
         holder.btnEdit.setOnClickListener {
             onEdit(transaction)

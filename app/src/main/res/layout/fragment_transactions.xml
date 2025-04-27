@@ -15,7 +15,8 @@
         android:text="@string/transactions"
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"/>
 
     <Spinner
         android:id="@+id/categoryFilterSpinner"
@@ -51,5 +52,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:srcCompat="@tools:sample/avatars"
-        android:src="@drawable/ic_add"/>
+        android:src="@drawable/ic_add"
+        android:backgroundTint="@color/accentColor"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

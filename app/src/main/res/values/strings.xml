@@ -32,4 +32,7 @@
     <string name="transactions">Transactions</string>
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="transactions2">Transactions</string>
+    <string name="settings2">Settings</string>
 </resources>

@@ -1,16 +1,20 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
     android:elevation="4dp"
-    android:padding="12dp">
+    android:padding="12dp"
+    app:cardCornerRadius="10dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:padding="10dp"
+        android:background="@color/listItem">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -43,7 +47,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/amount"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textSize="22sp"/>
         </LinearLayout>
 
         <LinearLayout
