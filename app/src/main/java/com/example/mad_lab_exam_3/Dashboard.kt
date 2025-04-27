@@ -45,7 +45,6 @@ class Dashboard : Fragment() {
             onDelete = { transaction -> confirmDeleteTransaction(transaction) }
         )
 
-
         val fab = view.findViewById<FloatingActionButton>(R.id.floatingActionButton)
         fab.setOnClickListener {
             showAddTransactionDialog()
@@ -64,7 +63,6 @@ class Dashboard : Fragment() {
         view.findViewById<TextView>(R.id.totalIncomeValue)?.text = "Rs. %.2f".format(totalIncome)
         view.findViewById<TextView>(R.id.totalExpensesValue)?.text = "Rs. %.2f".format(totalExpense)
         view.findViewById<TextView>(R.id.remainingBudgetValue)?.text = "Rs. %.2f".format(remaining)
-
 
         if (remaining < 0) {
             Toast.makeText(requireContext(), "Warning: Budget exceeded!", Toast.LENGTH_LONG).show()
@@ -99,7 +97,6 @@ class Dashboard : Fragment() {
             .setView(dialogView)
             .create()
 
-        // Date picker
         etDate.setOnClickListener {
             val calendar = Calendar.getInstance()
             val datePicker = DatePickerDialog(
@@ -119,12 +116,33 @@ class Dashboard : Fragment() {
             val amount = etAmount.text.toString().toDoubleOrNull()
             val category = etCategory.text.toString()
             val date = etDate.text.toString()
-            val type = if (rgType.checkedRadioButtonId == R.id.rbIncome) "income" else "expense"
 
-            if (title.isBlank() || amount == null || category.isBlank() || date.isBlank()) {
-                Toast.makeText(requireContext(), "Please fill all fields correctly", Toast.LENGTH_SHORT).show()
+            if (title.isBlank()) {
+                Toast.makeText(requireContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
+
+            if (amount == null) {
+                Toast.makeText(requireContext(), "Please enter a valid amount", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (category.isBlank()) {
+                Toast.makeText(requireContext(), "Please select a category", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (date.isBlank()) {
+                Toast.makeText(requireContext(), "Please choose a date", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (rgType.checkedRadioButtonId == -1) {
+                Toast.makeText(requireContext(), "Please select a transaction type", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val type = if (rgType.checkedRadioButtonId == R.id.rbIncome) "income" else "expense"
 
             val transaction = Transaction(
                 title = title,
@@ -138,7 +156,7 @@ class Dashboard : Fragment() {
             transactions.add(transaction)
             TransactionStorage.saveTransactions(requireContext(), transactions)
 
-            Toast.makeText(requireContext(), "Transaction added", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Transaction Added", Toast.LENGTH_SHORT).show()
             alertDialog.dismiss()
 
             val recyclerView = view?.findViewById<RecyclerView>(R.id.recyclerView)
@@ -162,7 +180,7 @@ class Dashboard : Fragment() {
                 val transactions = TransactionStorage.loadTransactions(requireContext())
                 transactions.removeIf { it.id == transaction.id }
                 TransactionStorage.saveTransactions(requireContext(), transactions)
-                Toast.makeText(requireContext(), "Deleted", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Transaction Deleted", Toast.LENGTH_SHORT).show()
                 refreshTransactionList()
             }
             .setNegativeButton("Cancel", null)
@@ -180,7 +198,6 @@ class Dashboard : Fragment() {
             onDelete = { transaction -> confirmDeleteTransaction(transaction) }
         )
 
-        // Also update the budget summary boxes
         val totalIncome = allTransactions.filter { it.type == "income" }.sumOf { it.amount }
         val totalExpense = allTransactions.filter { it.type == "expense" }.sumOf { it.amount }
         val prefs = requireContext().getSharedPreferences("finance_tracker_prefs", Context.MODE_PRIVATE)
@@ -207,11 +224,11 @@ class Dashboard : Fragment() {
         val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, categories)
         etCategory.setAdapter(categoryAdapter)
 
-        // Pre-fill fields with existing transaction data
         etTitle.setText(transaction.title)
         etAmount.setText(transaction.amount.toString())
         etCategory.setText(transaction.category, false)
         etDate.setText(transaction.date)
+
         if (transaction.type == "income") rbIncome.isChecked = true else rbExpense.isChecked = true
 
         val alertDialog = AlertDialog.Builder(requireContext())
@@ -237,15 +254,36 @@ class Dashboard : Fragment() {
             val amount = etAmount.text.toString().toDoubleOrNull()
             val category = etCategory.text.toString()
             val date = etDate.text.toString()
-            val type = if (rgType.checkedRadioButtonId == R.id.rbIncome) "income" else "expense"
 
-            if (title.isBlank() || amount == null || category.isBlank() || date.isBlank()) {
-                Toast.makeText(requireContext(), "Please fill all fields", Toast.LENGTH_SHORT).show()
+            if (title.isBlank()) {
+                Toast.makeText(requireContext(), "Title cannot be empty", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
+            if (amount == null) {
+                Toast.makeText(requireContext(), "Please enter a valid amount", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (category.isBlank()) {
+                Toast.makeText(requireContext(), "Please select a category", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (date.isBlank()) {
+                Toast.makeText(requireContext(), "Please choose a date", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            if (rgType.checkedRadioButtonId == -1) {
+                Toast.makeText(requireContext(), "Please select a transaction type", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val type = if (rgType.checkedRadioButtonId == R.id.rbIncome) "income" else "expense"
+
             val updatedTransaction = Transaction(
-                id = transaction.id, // keep same ID
+                id = transaction.id,
                 title = title,
                 amount = amount,
                 category = category,
@@ -258,7 +296,7 @@ class Dashboard : Fragment() {
             if (index != -1) {
                 transactions[index] = updatedTransaction
                 TransactionStorage.saveTransactions(requireContext(), transactions)
-                Toast.makeText(requireContext(), "Transaction updated", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Transaction Updated", Toast.LENGTH_SHORT).show()
             }
 
             alertDialog.dismiss()
@@ -267,7 +305,4 @@ class Dashboard : Fragment() {
 
         alertDialog.show()
     }
-
-
 }
-

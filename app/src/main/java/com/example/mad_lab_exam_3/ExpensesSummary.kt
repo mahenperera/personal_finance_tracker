@@ -20,12 +20,9 @@ class ExpensesSummary : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
-        // Load transactions
         val transactions = TransactionStorage.loadTransactions(requireContext())
         val expenses = transactions.filter { it.type == "expense" }
 
-        // Sum by category
         val foodTotal = expenses.filter { it.category.equals("Food", true) }.sumOf { it.amount }
         val transportTotal = expenses.filter { it.category.equals("Transport", true) }.sumOf { it.amount }
         val billsTotal = expenses.filter { it.category.equals("Bills", true) }.sumOf { it.amount }
@@ -34,7 +31,6 @@ class ExpensesSummary : Fragment() {
 
         val total = foodTotal + transportTotal + billsTotal + entertainmentTotal + otherTotal
 
-        // Set values to text views
         view.findViewById<TextView>(R.id.foodValue).text = "Rs. %.2f".format(foodTotal)
         view.findViewById<TextView>(R.id.TransportValue).text = "Rs. %.2f".format(transportTotal)
         view.findViewById<TextView>(R.id.BillsValue).text = "Rs. %.2f".format(billsTotal)

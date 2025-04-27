@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="26dp"
-        android:text="Welcome, Mahen!"
+        android:text="@string/welcome_msg"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/profileImageImageView"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,8 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:src="@drawable/dp"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/remainingBudgetCardView"
@@ -49,13 +50,12 @@
                 android:id="@+id/remainingBudgetTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Remaining Budget" />
+                android:text="@string/remaining_budget" />
 
             <TextView
                 android:id="@+id/remainingBudgetValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="TextView"
                 android:textSize="24sp" />
 
         </LinearLayout>
@@ -94,19 +94,19 @@
                     android:id="@+id/totalIncomeIcon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:src="@drawable/ic_income"/>
 
                 <TextView
                     android:id="@+id/totalIncomeTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Income" />
+                    android:text="@string/income2" />
 
                 <TextView
                     android:id="@+id/totalIncomeValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -127,25 +127,25 @@
                     android:id="@+id/totalExpensesIcon"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:src="@drawable/ic_expense"/>
 
                 <TextView
                     android:id="@+id/totalExpensesTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Expenses" />
+                    android:text="@string/expenses" />
 
                 <TextView
                     android:id="@+id/totalExpensesValue"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/summaryLink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Summary >"
+                    android:text="@string/summary"
                     android:textColor="@android:color/holo_blue_dark"
                     android:textSize="16sp"
                     android:layout_marginTop="12dp"
@@ -164,7 +164,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="30dp"
-        android:text="Recent Transactions"
+        android:text="@string/recent_transactions"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
@@ -186,10 +186,11 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:clickable="true"
-        android:contentDescription="TODO"
+        android:focusable="true"
+        android:contentDescription="@string/todo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:srcCompat="@tools:sample/avatars"
-        />
+        android:src="@drawable/ic_add"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

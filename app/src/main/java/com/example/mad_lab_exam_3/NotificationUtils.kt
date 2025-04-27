@@ -30,7 +30,6 @@ fun sendBudgetNotification(context: Context, message: String) {
 
 private const val REMINDER_CHANNEL_ID = "daily_reminder_channel"
 
-// Daily Reminder Notification
 fun sendDailyReminderNotification(context: Context) {
     createChannelIfNeeded(
         context,
@@ -50,7 +49,6 @@ fun sendDailyReminderNotification(context: Context) {
     NotificationManagerCompat.from(context).notify(1002, builder.build())
 }
 
-// Reusable channel creator
 private fun createChannelIfNeeded(context: Context, channelId: String, name: String, description: String) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
         val importance = NotificationManager.IMPORTANCE_HIGH

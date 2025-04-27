@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
 
         requestNotificationPermission()
         scheduleDailyReminder(this)
-
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -66,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun scheduleDailyReminder(context: Context) {
+    private fun scheduleDailyReminder(context: Context) {
         val intent = Intent(context, ReminderReceiver::class.java)
         val pendingIntent = PendingIntent.getBroadcast(
             context,
@@ -79,12 +78,11 @@ class MainActivity : AppCompatActivity() {
 
         val calendar = Calendar.getInstance().apply {
             timeInMillis = System.currentTimeMillis()
-            set(Calendar.HOUR_OF_DAY, 8)  // 8 PM
+            set(Calendar.HOUR_OF_DAY, 8)
             set(Calendar.MINUTE, 53)
             set(Calendar.SECOND, 0)
         }
 
-        // If time has already passed for today, schedule for tomorrow
         if (calendar.timeInMillis <= System.currentTimeMillis()) {
             calendar.add(Calendar.DAY_OF_YEAR, 1)
         }
@@ -96,6 +94,4 @@ class MainActivity : AppCompatActivity() {
             pendingIntent
         )
     }
-
-
 }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Settings"
+        android:text="@string/settings"
         android:textSize="28sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Monthly Budget:"
+        android:text="@string/set_monthly_budget"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingsHeading" />
 
@@ -42,7 +42,8 @@
             android:id="@+id/budgetEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="hint" />
+            android:hint="@string/monthly_budget"
+            android:inputType="numberDecimal"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -51,7 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:text="Save"
+        android:text="@string/save2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textInputLayout" />
 
@@ -61,7 +62,7 @@
         android:layout_height="49dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="300dp"
-        android:text="Backup Data"
+        android:text="@string/backup_data"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/saveSettingsBtn" />
 
@@ -71,7 +72,7 @@
         android:layout_height="46dp"
         android:layout_marginStart="100dp"
         android:layout_marginTop="21dp"
-        android:text="Restore From Backup"
+        android:text="@string/restore_from_backup"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_export_data" />
 
